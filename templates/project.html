@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Description - Anime Recommendation System</title>
+  <link rel="stylesheet" href="static/css/style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      background: white;
+      margin: auto;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h2, h3 {
+      color: #2c3e50;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      background: #2980b9;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+    }
+    a:hover {
+      background: #1c5980;
+    }
+    p, li {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Project Overview</h2>
+    <p>
+      The <strong>Anime Recommendation System</strong> aims to help users discover anime shows tailored to their tastes by leveraging both the content characteristics of anime and their overall popularity within the community.
+    </p>
+
+    <h3>Motivation</h3>
+    <p>
+      With thousands of anime available worldwide, it can be overwhelming for fans to find new shows that match their preferences. This project attempts to solve that problem by offering personalized suggestions based on the genres, types, and names of anime that users already enjoy, alongside trending titles favored by the broader audience.
+    </p>
+
+    <h3>Datasets Used</h3>
+    <ul>
+      <li>
+        <strong>Anime Dataset:</strong> Contains metadata about anime titles including genres, types (TV, Movie, OVA, etc.), ratings, and member counts.
+      </li>
+      <li>
+        <strong>Ratings Dataset:</strong> Contains user ratings for different anime, which helps filter out unreliable or irrelevant ratings.
+      </li>
+    </ul>
+
+    <h3>Libraries Used and Their Purpose</h3>
+    <ul>
+      <li><strong>Flask</strong>: A lightweight web framework used to create the web app and handle requests from users.</li>
+
+      <li><strong>pandas</strong>: For loading and managing the anime and rating datasets easily in tables (dataframes), and for filtering and merging data.</li>
+
+      <li><strong>scikit-learn (sklearn)</strong>:
+        <ul>
+          <li><em>TfidfVectorizer</em>: Converts anime text data (genres, names, types) into numerical vectors that machines can understand.</li>
+          <li><em>cosine_similarity</em>: Measures how similar two animes are based on their text features, helping to find recommendations.</li>
+          <li><em>MinMaxScaler</em> (optional): Used to scale numerical values into a range if needed (not mandatory here).</li>
+        </ul>
+      </li>
+
+      <li><strong>HTML & Jinja2 Templates</strong>: Used to create the web pages dynamically, showing results and taking user input.</li>
+    </ul>
+
+    <h3>Why These Libraries?</h3>
+    <p>
+      This project uses Flask because it is easy to build web apps quickly and handle user inputs like search queries. Pandas helps to efficiently handle large datasets and perform operations like filtering anime by type or rating. Scikit-learn’s TF-IDF and similarity functions allow us to recommend animes by understanding text data and comparing them based on their features like genre and type. This combination helps make a smooth and interactive recommendation system.
+    </p>
+
+    <h3>Steps Performed</h3>
+    <ul>
+      <li>Data Cleaning and Preprocessing: Handling missing values and filtering irrelevant ratings.</li>
+      <li>Feature Engineering: Combining genre, type, and name fields into a single text feature for content analysis.</li>
+      <li>Text Vectorization: Using <strong>TF-IDF (Term Frequency-Inverse Document Frequency)</strong> to convert textual features into numerical vectors that reflect the importance of terms.</li>
+      <li>Computing Similarities: Using <strong>Cosine Similarity</strong> on TF-IDF vectors to measure how similar two anime are based on their content features.</li>
+      <li>Popularity Scoring: Scaling member counts and ratings using MinMaxScaler and combining them into a popularity score for general trending recommendations.</li>
+    </ul>
+
+    <h3>Algorithms Used</h3>
+    <ul>
+      <li>
+        <strong>TF-IDF + Cosine Similarity:</strong> This combination quantifies how closely the text descriptions of anime match each other. It enables the system to recommend anime that share similar genres, types, or keywords in their names, providing a personalized recommendation based on content.
+      </li>
+      <li>
+        <strong>Popularity-Based Ranking:</strong> Uses a weighted combination of the number of members and average rating to highlight anime that are popular and well-rated by the community, offering users a view of trending anime they might enjoy.
+      </li>
+    </ul>
+    
+
+    <h3>Why These Algorithms?</h3>
+<p>
+  <strong>Content-Based Filtering</strong> with TF-IDF and cosine similarity is a proven approach in recommendation systems to capture textual similarity effectively, which works well in domains like anime where descriptive metadata is rich and varied.
+</p>
+<p>
+  However, content-based filtering alone might ignore anime that are widely loved but do not share direct content similarity with the user’s preferences. Hence, a <strong>Popularity-Based Ranking</strong> is incorporated to balance the recommendations and present trending and highly rated anime, improving user satisfaction.
+</p>
+<p>
+  Compared to other common recommendation methods like <strong>Collaborative Filtering</strong>, which makes recommendations based on users with similar tastes, our approach doesn’t require extensive user rating data and can start working well even with new users (solving the "cold start" problem).
+</p>
+<p>
+  Unlike simple popularity-based methods that only recommend the most popular items regardless of user preference, our hybrid system combines popularity with personalized content similarity, offering a mix of familiar favorites and new suggestions aligned with individual tastes.
+</p>
+<p>
+  This makes the system both practical and user-friendly, providing meaningful recommendations quickly while keeping options diverse and interesting.
+</p>
+
+    <h3>Advantages of This Hybrid Approach</h3>
+    <ul>
+      <li>Provides personalized recommendations tailored to individual tastes based on content similarity.</li>
+      <li>Includes popular titles to ensure users don’t miss mainstream favorites.</li>
+      <li>Easy to extend and improve by adding more features or incorporating collaborative filtering in future.</li>
+      <li>Uses scalable and interpretable algorithms that can handle large datasets efficiently.</li>
+    </ul>
+
+    <h3>Potential Future Improvements</h3>
+    <ul>
+      <li>Integrate Collaborative Filtering based on user ratings and preferences.</li>
+      <li>Use deep learning embeddings for richer feature extraction from anime descriptions and images.</li>
+      <li>Add user profiles and feedback loops to improve recommendation accuracy over time.</li>
+      <li>Include multilingual support and more comprehensive datasets.</li>
+    </ul>
+
+    <h3>Project Directory Structure</h3>
+<pre style="background:#f4f4f4; padding:15px; border-radius:8px; overflow-x:auto;">
+anime-recommender/
+├── app.py                  # Flask backend logic
+├── data/
+│   ├── anime.csv
+│   └── rating.csv          # Raw datasets
+├── models/
+│   ├── tfidf_model.pkl
+│   ├── similarity_matrix.pkl
+│   └── popularity_model.pkl  # Precomputed model files
+├── static/
+│   └── css/
+│       └── style.css       # Custom CSS styling
+├── templates/
+│   ├── index.html          # Home input page
+│   ├── recommendations.html
+│   ├── popular.html
+│   ├── team.html
+│   └── project.html    # 🔍 Project Overview Page
+│   
+├── requirements.txt        # Python dependencies
+├── Procfile                # Heroku deployment configuration
+├── runtime.txt             # Python version for deployment
+└── README.md               # 📄 Project documentation
+</pre>
+
+    <a href="/">Back to Home</a>
+  </div>
+</body>
+</html>

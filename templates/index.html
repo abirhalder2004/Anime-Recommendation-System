@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anime Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Add Font Awesome for GitHub icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+    }
+    .container {
+      max-width: 600px;
+      margin: 100px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3498db;
+    }
+    a {
+      display: inline-block;
+      margin: 15px 10px 0;
+      text-decoration: none;
+      color: #3498db;
+      color: white;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Added for GitHub repo link */
+    .repo-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 15px;
+      background: #24292e;
+      color: white;
+      border-radius: 5px;
+    }
+    .repo-link:hover {
+      background: #2d3338;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Anime Recommender System</h1>
+    
+    <form action="/recommend" method="post">
+      <input type="text" name="anime_name" placeholder="Enter anime name,genre,type." required>
+      <br>
+      <button type="submit">Get Recommendations</button>
+    </form>
+
+    <form action="/popular" method="get">
+      <button type="submit">View Popular Anime</button>
+    </form>
+
+    <div>
+      <a href="/project">Project Details</a>
+      <a href="/team">Team Members</a>
+      <a href="/documentation">Documentation</a>
+    </div>
+
+    <!-- Added GitHub repository link -->
+    <a href="https://github.com/Prasunnandi/Anime_recomendation_v1.git" target="_blank" class="repo-link">
+      <i class="fab fa-github"></i> View Project on GitHub
+    </a>
+  </div>
+</body>
+</html>

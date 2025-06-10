@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Recommendation System - Complete Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+        }
+        .code-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        .algorithm-card {
+            border-left: 4px solid #0d6efd;
+            margin-bottom: 20px;
+        }
+        .library-card {
+            border-left: 4px solid #198754;
+            margin-bottom: 20px;
+        }
+        .visualization {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2, h3, h4 {
+            color: #0d6efd;
+            margin-top: 30px;
+        }
+        .nav-link {
+            color: #495057;
+        }
+        .nav-link.active {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        .explanation {
+            background-color: #e9f7fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+        }
+        .diagram {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            text-align: center;
+        }
+        .library-info {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4 class="mb-4">Anime Recommendation System</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#overview">System Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#data-collection">Data Collection</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#preprocessing">Data Preprocessing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#eda">Exploratory Data Analysis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#content-based">Content-Based Filtering</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#collab-filtering">Collaborative Filtering</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#flask-app">Flask Application</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#routes">Route Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#libraries">Key Libraries</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1 id="overview" class="mb-4">Anime Recommendation System Documentation</h1>
+        
+        <div class="alert alert-info">
+            <h4>System Overview</h4>
+            <p>This system recommends anime based on both content similarity and user ratings patterns. It combines:</p>
+            <ul>
+                <li><strong>Content-Based Filtering</strong>: Recommends similar anime based on genres, type, and other features</li>
+                <li><strong>Collaborative Filtering</strong>: Recommends anime liked by users with similar tastes</li>
+                <li><strong>Hybrid Approach</strong>: Combines both methods for comprehensive recommendations</li>
+            </ul>
+            <div class="text-center my-4">
+                <img src="https://cdn.prod.website-files.com/5ef788f07804fb7d78a4127a/61cef616e49c240546d139a2_recommendation%20systems-min.png" alt="Recommendation System Types" class="img-fluid" style="max-width: 600px;">
+                <p class="text-muted mt-2">Types of Recommendation Systems</p>
+            </div>
+        </div>
+
+        <h2 id="data-collection">Data Collection</h2>
+        <div class="code-section">
+            <pre><code># Create data directory if not exists
+os.makedirs("data", exist_ok=True)
+
+# Load datasets (assuming files are already downloaded)
+try:
+    anime_df = pd.read_csv('data/anime.csv')
+    rating_df = pd.read_csv('data/rating.csv')
+except FileNotFoundError:
+    print("Please download the datasets from Kaggle and place them in the data folder")
+    print("Anime dataset: https://www.kaggle.com/CooperUnion/anime-recommendations-database")
+    print("Rating dataset: https://www.kaggle.com/CooperUnion/anime-recommendations-database")
+    exit()</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Detailed Explanation:</h5>
+            <ul>
+                <li><strong>Directory Creation</strong>:
+                    <ul>
+                        <li><code>os.makedirs("data", exist_ok=True)</code> ensures the data directory exists</li>
+                        <li><code>exist_ok=True</code> prevents errors if directory already exists</li>
+                    </ul>
+                </li>
+                <li><strong>Data Loading</strong>:
+                    <ul>
+                        <li>Uses Pandas' <code>read_csv()</code> to load anime and rating data</li>
+                        <li>Data is loaded into DataFrames for easy manipulation</li>
+                    </ul>
+                </li>
+                <li><strong>Error Handling</strong>:
+                    <ul>
+                        <li>Gracefully handles missing files with helpful instructions</li>
+                        <li>Provides direct links to Kaggle datasets</li>
+                    </ul>
+                </li>
+                <li><strong>Data Sources</strong>:
+                    <ul>
+                        <li>From Kaggle's Anime Recommendations Database</li>
+                        <li>Contains anime metadata and user ratings</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="library-info">
+                <h6>Pandas Features Used:</h6>
+                <ul>
+                    <li><code>read_csv()</code>: Efficient CSV file reading</li>
+                    <li>DataFrame structure for tabular data manipulation</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 id="preprocessing">Data Preprocessing</h2>
+        <div class="code-section">
+            <pre><code>def clean_anime_data(df):
+    # Rename columns for consistency
+    df = df.rename(columns={'name': 'title', 'rating': 'avg_rating'})
+    
+    # Handle missing values
+    df['genre'] = df['genre'].fillna('Unknown')
+    df['type'] = df['type'].fillna('Unknown')
+    df['episodes'] = df['episodes'].replace('Unknown', np.nan)
+    
+    # Convert to numeric
+    df['episodes'] = pd.to_numeric(df['episodes'], errors='coerce')
+    df['avg_rating'] = pd.to_numeric(df['avg_rating'], errors='coerce')
+    
+    # Fill numeric missing values
+    df['avg_rating'] = df['avg_rating'].fillna(df['avg_rating'].median())
+    df['members'] = df['members'].fillna(df['members'].median())
+    df['episodes'] = df['episodes'].fillna(df['episodes'].median())
+    
+    return df
+
+def clean_rating_data(df):
+    # Replace -1 (unknown rating) with NaN
+    df['rating'] = df['rating'].replace(-1, np.nan)
+    return df
+
+anime_df = clean_anime_data(anime_df)
+rating_df = clean_rating_data(rating_df)
+
+# Save cleaned data
+anime_df.to_csv('data/cleaned_anime.csv', index=False)
+rating_df.to_csv('data/cleaned_rating.csv', index=False)</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Detailed Explanation:</h5>
+            <ol>
+                <li><strong>Column Renaming</strong>:
+                    <ul>
+                        <li>Standardizes column names for consistency</li>
+                        <li><code>'name' → 'title'</code> and <code>'rating' → 'avg_rating'</code> for clarity</li>
+                    </ul>
+                </li>
+                <li><strong>Missing Value Handling</strong>:
+                    <ul>
+                        <li>Categorical data (genre, type) filled with 'Unknown'</li>
+                        <li>Numerical data converted properly with <code>pd.to_numeric()</code></li>
+                        <li><code>errors='coerce'</code> converts invalid values to NaN</li>
+                    </ul>
+                </li>
+                <li><strong>Imputation</strong>:
+                    <ul>
+                        <li>Uses median for numerical missing values (robust to outliers)</li>
+                        <li>Better than mean for skewed distributions</li>
+                    </ul>
+                </li>
+                <li><strong>Rating Cleaning</strong>:
+                    <ul>
+                        <li>-1 ratings indicate "no rating" in the dataset</li>
+                        <li>Converted to NaN for proper handling</li>
+                    </ul>
+                </li>
+                <li><strong>Data Persistence</strong>:
+                    <ul>
+                        <li>Cleaned data saved to new CSV files</li>
+                        <li><code>index=False</code> prevents saving unnecessary index column</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="visualization">
+                <h6>Data Cleaning Pipeline:</h6>
+                <img src="https://www.researchgate.net/publication/370648827/figure/fig2/AS:11431281190492314@1695345667208/Basic-process-of-data-cleaning.ppm" alt="Data Cleaning Process" class="img-fluid">
+                <p class="text-muted">Complete data cleaning workflow from raw to processed data</p>
+            </div>
+            <div class="library-info">
+                <h6>Pandas Techniques Used:</h6>
+                <ul>
+                    <li><code>fillna()</code>: Missing value imputation</li>
+                    <li><code>pd.to_numeric()</code>: Type conversion with error handling</li>
+                    <li><code>replace()</code>: Value substitution</li>
+                    <li><code>median()</code>: Robust central tendency measure</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 id="eda">Exploratory Data Analysis (EDA)</h2>
+        <div class="code-section">
+            <pre><code># Anime distribution by type
+plt.figure(figsize=(12, 6))
+sns.countplot(data=anime_df, x='type', order=anime_df['type'].value_counts().index, palette="viridis")
+plt.title('Distribution of Anime by Type', fontsize=14)
+plt.xlabel('Type', fontsize=12)
+plt.ylabel('Count', fontsize=12)
+plt.xticks(rotation=45)
+plt.show()
+
+# Rating distribution
+plt.figure(figsize=(12, 6))
+sns.histplot(anime_df['avg_rating'].dropna(), bins=30, kde=True, color='skyblue')
+plt.title('Distribution of Anime Ratings', fontsize=14)
+plt.xlabel('Average Rating', fontsize=12)
+plt.ylabel('Count', fontsize=12)
+plt.show()
+
+# Top genres
+all_genres = list(itertools.chain(*[str(x).split(', ') for x in anime_df['genre'].unique()]))
+genre_counts = Counter(all_genres)
+
+top_genres = pd.DataFrame.from_dict(genre_counts, orient='index').sort_values(0, ascending=False).head(15)
+plt.figure(figsize=(14, 8))
+sns.barplot(x=top_genres[0], y=top_genres.index, palette="rocket")
+plt.title('Top 15 Anime Genres', fontsize=14)
+plt.xlabel('Count', fontsize=12)
+plt.ylabel('Genre', fontsize=12)
+plt.show()</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Detailed Explanation:</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <h6>Anime Type Distribution</h6>
+                    <ul>
+                        <li><strong>Countplot</strong>: Shows frequency of each anime type</li>
+                        <li><code>order=</code> parameter sorts by frequency</li>
+                        <li>Visual customization with titles, labels, and rotation</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Rating Distribution</h6>
+                    <ul>
+                        <li><strong>Histplot</strong>: Shows distribution of ratings</li>
+                        <li><code>bins=30</code> provides good granularity</li>
+                        <li><code>kde=True</code> adds density curve</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Genre Analysis</h6>
+                    <ul>
+                        <li><strong>Genre Processing</strong>:
+                            <ul>
+                                <li>Splits comma-separated genres</li>
+                                <li>Flattens list with <code>itertools.chain</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Counting</strong>: Uses <code>Counter</code> for frequency</li>
+                        <li><strong>Visualization</strong>: Horizontal bar plot for readability</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <div class="visualization">
+                        <p class="text-muted">Most anime are TV series, followed by OVAs and Movies</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="visualization">
+                        <p class="text-muted">Ratings follow a roughly normal distribution centered around 7</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="visualization">
+                        <p class="text-muted">Comedy, Action, and Fantasy are the most common genres</p>
+                    </div>
+                </div>
+            </div>
+            <div class="library-info mt-3">
+                <h6>Visualization Libraries Used:</h6>
+                <ul>
+                    <li><strong>Matplotlib</strong>:
+                        <ul>
+                            <li>Figure sizing</li>
+                            <li>Titles and labels</li>
+                        </ul>
+                    </li>
+                    <li><strong>Seaborn</strong>:
+                        <ul>
+                            <li><code>countplot()</code> for categorical counts</li>
+                            <li><code>histplot()</code> for distributions</li>
+                            <li><code>barplot()</code> for comparisons</li>
+                            <li>Color palettes for visual appeal</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 id="content-based">Content-Based Filtering</h2>
+        <div class="code-section">
+            <pre><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+
+def create_content_features(df):
+    # TF-IDF for genres
+    tfidf = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf.fit_transform(df['genre'])
+    
+    # Compute cosine similarity
+    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+    
+    # Create title to index mapping
+    indices = pd.Series(df.index, index=df['title']).drop_duplicates()
+    
+    return cosine_sim, tfidf_matrix, indices
+
+cosine_sim, tfidf_matrix, anime_indices = create_content_features(anime_df)</code></pre>
+        </div>
+        <div class="algorithm-card card p-3">
+            <h5>Content-Based Filtering Explained:</h5>
+            <div class="mb-3">
+                <h6>Layman's Terms:</h6>
+                <p>"If you liked 'Naruto' (an action/adventure anime), you might like other action/adventure anime like 'One Piece' or 'Bleach'."</p>
+            </div>
+            <div class="mb-3">
+                <h6>Simple Explanation:</h6>
+                <p>The system analyzes the content features of anime (genres, types) and recommends other anime with similar characteristics. It understands which features are important and how similar different anime are based on these features.</p>
+            </div>
+            <div>
+                <h6>Technical Deep Dive:</h6>
+                <ol>
+                    <li><strong>TF-IDF Vectorization</strong>:
+                        <ul>
+                            <li>Converts text genres into numerical vectors</li>
+                            <li>Weights terms using Term Frequency-Inverse Document Frequency:
+                                <ul>
+                                    <li>Term Frequency: How often term appears in document</li>
+                                    <li>Inverse Document Frequency: Penalizes common terms</li>
+                                </ul>
+                            </li>
+                            <li><code>stop_words='english'</code> removes common words</li>
+                        </ul>
+                    </li>
+                    <li><strong>Cosine Similarity</strong>:
+                        <ul>
+                            <li>Measures angle between vectors in high-dimensional space</li>
+                            <li>Value of 1 means identical, 0 means no similarity</li>
+                            <li><code>linear_kernel</code> is optimized version for TF-IDF</li>
+                        </ul>
+                    </li>
+                    <li><strong>Index Mapping</strong>:
+                        <ul>
+                            <li>Creates lookup between anime titles and matrix indices</li>
+                            <li><code>drop_duplicates()</code> handles rare title collisions</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="visualization mt-3">
+                <img src="https://www.c-sharpcorner.com/article/what-is-tf-idf-in-machine-learning/Images/TFIDF%20IMAGE-.jpg" alt="TF-IDF Process" class="img-fluid">
+                <p class="text-muted">TF-IDF converts text to numerical vectors preserving important features</p>
+            </div>
+            <div class="library-info mt-3">
+                <h6>Scikit-learn Components:</h6>
+                <ul>
+                    <li><strong>TfidfVectorizer</strong>:
+                        <ul>
+                            <li>Tokenization and preprocessing</li>
+                            <li>Vocabulary building</li>
+                            <li>TF-IDF calculation</li>
+                        </ul>
+                    </li>
+                    <li><strong>linear_kernel</strong>:
+                        <ul>
+                            <li>Optimized for sparse matrices</li>
+                            <li>Computes dot product between normalized vectors</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 id="collab-filtering">Collaborative Filtering</h2>
+        <div class="code-section">
+            <pre><code>from surprise import Dataset, Reader
+from collections import defaultdict
+
+def prepare_collab_data(rating_df, min_user_ratings=20, min_anime_ratings=50):
+    # Filter active users
+    user_counts = rating_df['user_id'].value_counts()
+    active_users = user_counts[user_counts >= min_user_ratings].index
+    filtered_ratings = rating_df[rating_df['user_id'].isin(active_users)]
+    
+    # Filter popular anime
+    anime_counts = filtered_ratings['anime_id'].value_counts()
+    popular_anime = anime_counts[anime_counts >= min_anime_ratings].index
+    filtered_ratings = filtered_ratings[filtered_ratings['anime_id'].isin(popular_anime)]
+    
+    # Prepare Surprise dataset
+    reader = Reader(rating_scale=(1, 10))
+    data = Dataset.load_from_df(filtered_ratings[['user_id', 'anime_id', 'rating']], reader)
+    
+    return data, filtered_ratings
+
+collab_data, filtered_ratings = prepare_collab_data(rating_df)</code></pre>
+        </div>
+        <div class="algorithm-card card p-3">
+            <h5>Collaborative Filtering Explained:</h5>
+            <div class="mb-3">
+                <h6>Layman's Terms:</h6>
+                <p>"People who liked the same anime as you also enjoyed these other shows that you haven't watched yet."</p>
+            </div>
+            <div class="mb-3">
+                <h6>Simple Explanation:</h6>
+                <p>The system identifies users with similar rating patterns to yours and recommends anime that those similar users have rated highly, but that you haven't seen yet. It's like getting recommendations from friends with similar tastes.</p>
+            </div>
+            <div>
+                <h6>Technical Deep Dive:</h6>
+                <ol>
+                    <li><strong>Data Filtering</strong>:
+                        <ul>
+                            <li><strong>Active Users</strong>: Only considers users with ≥20 ratings
+                                <ul>
+                                    <li>Removes casual users for more reliable patterns</li>
+                                    <li>Uses <code>value_counts()</code> for frequency analysis</li>
+                                </ul>
+                            </li>
+                            <li><strong>Popular Anime</strong>: Only considers anime with ≥50 ratings
+                                <ul>
+                                    <li>Ensures sufficient data for each anime</li>
+                                    <li>Prevents recommendations for obscure titles</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Surprise Library</strong>:
+                        <ul>
+                            <li>Specialized library for recommendation systems</li>
+                            <li><code>Reader</code> class defines rating scale (1-10)</li>
+                            <li><code>Dataset</code> class formats data for algorithms</li>
+                        </ul>
+                    </li>
+                    <li><strong>User-Item Matrix</strong>:
+                        <ul>
+                            <li>Rows represent users, columns represent anime</li>
+                            <li>Cells contain ratings (sparse matrix)</li>
+                            <li>Similarity calculated between rows (users)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="visualization mt-3">
+                <img src="https://miro.medium.com/v2/resize:fit:1400/1*omYTxakC8y4dz-fvpM1Lug.jpeg" alt="Collaborative Filtering" class="img-fluid">
+                <p class="text-muted">User-Item matrix with ratings and similarity calculation</p>
+            </div>
+            <div class="library-info mt-3">
+                <h6>Key Components:</h6>
+                <ul>
+                    <li><strong>Pandas Filtering</strong>:
+                        <ul>
+                            <li><code>value_counts()</code> for frequency analysis</li>
+                            <li><code>isin()</code> for efficient filtering</li>
+                        </ul>
+                    </li>
+                    <li><strong>Surprise Library</strong>:
+                        <ul>
+                            <li>Built for collaborative filtering</li>
+                            <li>Supports various algorithms (KNN, SVD)</li>
+                            <li>Handles dataset preparation</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 id="flask-app">Flask Application Structure</h2>
+        <div class="code-section">
+            <pre><code>from flask import Flask, render_template, request
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+app = Flask(__name__)
+
+# [Previous data loading and processing code...]
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Flask Application Architecture:</h5>
+            <ol>
+                <li><strong>Initialization</strong>:
+                    <ul>
+                        <li><code>Flask(__name__)</code> creates application instance</li>
+                        <li>All routes and logic are attached to this instance</li>
+                    </ul>
+                </li>
+                <li><strong>Data Loading</strong>:
+                    <ul>
+                        <li>Done once at startup</li>
+                        <li>Processed data available to all routes</li>
+                    </ul>
+                </li>
+                <li><strong>Route Decorators</strong>:
+                    <ul>
+                        <li><code>@app.route</code> binds URLs to functions</li>
+                        <li>Can handle multiple HTTP methods (GET, POST)</li>
+                    </ul>
+                </li>
+                <li><strong>Templating</strong>:
+                    <ul>
+                        <li><code>render_template()</code> generates HTML responses</li>
+                        <li>Jinja2 templating engine for dynamic content</li>
+                    </ul>
+                </li>
+                <li><strong>Development Server</strong>:
+                    <ul>
+                        <li><code>debug=True</code> enables auto-reload and error pages</li>
+                        <li>Runs on localhost:5000 by default</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="visualization">
+                <img src="https://testdriven.io/static/images/blog/flask/flask-request-processing/request_response_cycle_2.png" alt="Flask Flow" class="img-fluid">
+                <p class="text-muted">Flask request-response cycle</p>
+            </div>
+        </div>
+
+        <h2 id="routes">Route Implementations</h2>
+        
+        <h3>Recommendation Route</h3>
+        <div class="code-section">
+            <pre><code>@app.route("/recommend", methods=["GET", "POST"])
+def recommend():
+    # Get input parameters
+    if request.method == "POST":
+        anime_name = request.form.get("anime_name", "").strip()
+        types_selected = request.form.getlist("types")
+        page = int(request.form.get("page", 1))
+    else:  # GET request
+        anime_name = request.args.get("anime_name", "").strip()
+        types_selected = request.args.getlist("types")
+        page = int(request.args.get("page", 1))
+
+    # Default to all types if none selected
+    if not types_selected:
+        types_selected = anime_df["type"].unique().tolist()
+
+    # Filter by selected types
+    filtered_df = anime_df[anime_df["type"].isin(types_selected)]
+
+    # Apply search filter if provided
+    if anime_name:
+        mask = (
+            filtered_df["name"].str.contains(anime_name, case=False, na=False) |
+            filtered_df["genre"].str.contains(anime_name, case=False, na=False)
+        )
+        filtered_df = filtered_df[mask]
+
+    # Handle no results
+    if filtered_df.empty:
+        return render_template("recommendations.html", 
+                            error="No anime matched your criteria.")
+
+    # Pagination setup
+    per_page = 10
+    start = (page - 1) * per_page
+    end = start + per_page
+    filtered_indices = filtered_df.index.tolist()
+
+    # Generate recommendations
+    if anime_name in indices:
+        # Content-based filtering
+        idx = indices[anime_name]
+        sim_scores = [(i, cosine_sim[idx][i]) for i in filtered_indices]
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        sim_scores = [x for x in sim_scores if x[0] != idx]  # exclude self
+    else:
+        # Fallback to highest rated
+        sim_scores = [(i, filtered_df.loc[i, "rating"]) for i in filtered_indices]
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Apply pagination
+    sim_scores_page = sim_scores[start:end]
+    anime_indices_page = [i[0] for i in sim_scores_page]
+
+    # Prepare results
+    recommendations = anime_df.loc[anime_indices_page, 
+                                ["name", "genre", "type", "rating"]].copy()
+    recommendations["score"] = [i[1] for i in sim_scores_page]
+
+    # Pagination controls
+    has_next = end < len(sim_scores)
+    has_prev = start > 0
+
+    return render_template(
+        "recommendations.html",
+        recommendations=recommendations.to_dict(orient="records"),
+        anime_name=anime_name,
+        types_selected=types_selected,
+        page=page,
+        has_next=has_next,
+        has_prev=has_prev
+    )</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Recommendation Route Breakdown:</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Input Handling</h6>
+                    <ul>
+                        <li><strong>Dual Method Support</strong>:
+                            <ul>
+                                <li>Handles both GET (URL params) and POST (form data)</li>
+                                <li><code>request.form</code> vs <code>request.args</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Parameter Processing</strong>:
+                            <ul>
+                                <li>Strips whitespace from anime name</li>
+                                <li>Gets multiple selected types</li>
+                                <li>Defaults to page 1 if not specified</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Filtering Logic</h6>
+                    <ul>
+                        <li><strong>Type Filtering</strong>:
+                            <ul>
+                                <li>Defaults to all types if none selected</li>
+                                <li>Uses <code>isin()</code> for efficient filtering</li>
+                            </ul>
+                        </li>
+                        <li><strong>Search Functionality</strong>:
+                            <ul>
+                                <li>Searches both name and genre fields</li>
+                                <li>Case-insensitive with <code>case=False</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h6>Recommendation Logic</h6>
+                    <ul>
+                        <li><strong>Content-Based</strong>:
+                            <ul>
+                                <li>Uses precomputed cosine similarity</li>
+                                <li>Gets top matches for input anime</li>
+                                <li>Excludes the input anime itself</li>
+                            </ul>
+                        </li>
+                        <li><strong>Fallback Mechanism</strong>:
+                            <ul>
+                                <li>If anime not found, uses highest rated</li>
+                                <li>Ensures always returning results</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Pagination</h6>
+                    <ul>
+                        <li><strong>Page Calculation</strong>:
+                            <ul>
+                                <li>10 items per page</li>
+                                <li>Calculates start/end indices</li>
+                            </ul>
+                        </li>
+                        <li><strong>Navigation Controls</strong>:
+                            <ul>
+                                <li><code>has_next</code>/<code>has_prev</code> flags</li>
+                                <li>Passed to template for UI controls</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="library-info mt-3">
+                <h6>Key Techniques:</h6>
+                <ul>
+                    <li><strong>Pandas Filtering</strong>: Efficient data subsetting</li>
+                    <li><strong>List Comprehensions</strong>: Clean score processing</li>
+                    <li><strong>Dictionary Conversion</strong>: <code>to_dict()</code> for templates</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Popular Anime Route</h3>
+        <div class="code-section">
+            <pre><code>@app.route('/popular', methods=['GET'])
+def popular():
+    # Get parameters with defaults
+    anime_type = request.args.get('type', 'TV')  # default is TV
+    page = int(request.args.get('page', 1))
+    per_page = 20
+
+    # Load fresh data (in case of updates)
+    anime_df = pd.read_csv('data/anime.csv')
+    ratings_df = pd.read_csv('data/rating.csv')
+    ratings_df = ratings_df[ratings_df['rating'] > 0]  # exclude non-ratings
+
+    # Calculate popularity metrics
+    popularity_df = ratings_df.groupby('anime_id').agg(
+        avg_rating=('rating', 'mean'),
+        rating_count=('rating', 'count')
+    ).reset_index()
+
+    # Merge with anime data
+    merged_df = pd.merge(popularity_df, anime_df, on='anime_id')
+    
+    # Filter by type
+    filtered_df = merged_df[merged_df['type'] == anime_type]
+
+    # Calculate combined popularity score
+    filtered_df['popularity_score'] = filtered_df['rating_count'] * filtered_df['avg_rating']
+    
+    # Sort by popularity
+    sorted_df = filtered_df.sort_values(by='popularity_score', ascending=False)
+
+    # Pagination
+    total_anime = sorted_df.shape[0]
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    # Get current page results
+    anime_list = sorted_df.iloc[start:end][[
+        'name', 'type', 'avg_rating', 
+        'rating_count', 'popularity_score'
+    ]].to_dict(orient='records')
+
+    # Pagination controls
+    has_next = end < total_anime
+    has_prev = start > 0
+
+    return render_template(
+        'popular.html',
+        anime_list=anime_list,
+        selected_type=anime_type,
+        page=page,
+        has_next=has_next,
+        has_prev=has_prev
+    )</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Popular Anime Route Breakdown:</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Data Processing</h6>
+                    <ul>
+                        <li><strong>Fresh Data Load</strong>:
+                            <ul>
+                                <li>Reloads data to capture any updates</li>
+                                <li>Filters out non-ratings (-1 values)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Aggregation</strong>:
+                            <ul>
+                                <li>Groups by anime_id</li>
+                                <li>Calculates average rating and count</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Popularity Calculation</h6>
+                    <ul>
+                        <li><strong>Score Formula</strong>:
+                            <ul>
+                                <li><code>rating_count * avg_rating</code></li>
+                                <li>Balances quantity and quality</li>
+                            </ul>
+                        </li>
+                        <li><strong>Sorting</strong>:
+                            <ul>
+                                <li>Descending by popularity score</li>
+                                <li>Most popular first</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h6>Pagination</h6>
+                    <ul>
+                        <li><strong>Page Size</strong>: 20 items per page</li>
+                        <li><strong>Index Calculation</strong>:
+                            <ul>
+                                <li>Calculates start/end indices</li>
+                                <li>Handles edge cases</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Result Preparation</h6>
+                    <ul>
+                        <li><strong>Data Selection</strong>:
+                            <ul>
+                                <li>Only relevant columns included</li>
+                                <li>Converts to dictionary for template</li>
+                            </ul>
+                        </li>
+                        <li><strong>Template Variables</strong>:
+                            <ul>
+                                <li>Passes pagination controls</li>
+                                <li>Includes selected type for UI</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="library-info mt-3">
+                <h6>Pandas Features Highlight:</h6>
+                <ul>
+                    <li><code>groupby().agg()</code>: Powerful aggregation</li>
+                    <li><code>merge()</code>: Combining datasets</li>
+                    <li><code>sort_values()</code>: Ordered results</li>
+                    <li><code>iloc[]</code>: Position-based indexing</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Additional Routes</h3>
+        <div class="code-section">
+            <pre><code>@app.route("/project")
+def project():
+    """Project information page"""
+    return render_template("project.html")
+
+@app.route("/team")
+def team():
+    """Team information page"""
+    return render_template("team.html")</code></pre>
+        </div>
+        <div class="explanation">
+            <h5>Simple Route Explanation:</h5>
+            <ul>
+                <li><strong>Project Page</strong>:
+                    <ul>
+                        <li>Displays project overview and documentation</li>
+                        <li>Static content with possible dynamic elements</li>
+                    </ul>
+                </li>
+                <li><strong>Team Page</strong>:
+                    <ul>
+                        <li>Shows team member information</li>
+                        <li>Could be extended with database backend</li>
+                    </ul>
+                </li>
+                <li><strong>Template Rendering</strong>:
+                    <ul>
+                        <li>Uses Flask's template system</li>
+                        <li>HTML files stored in templates/ directory</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2 id="libraries">Key Libraries and Technologies</h2>
+        
+        <div class="library-card card p-3">
+            <h4>Flask</h4>
+            <ul>
+                <li><strong>Purpose</strong>: Micro web framework for Python</li>
+                <li><strong>Key Features Used</strong>:
+                    <ul>
+                        <li><code>@app.route</code> decorators for URL routing</li>
+                        <li><code>render_template</code> for Jinja2 templating</li>
+                        <li><code>request</code> object for form/query parameter handling</li>
+                    </ul>
+                </li>
+                <li><strong>Benefits</strong>:
+                    <ul>
+                        <li>Lightweight and flexible</li>
+                        <li>Easy to get started with</li>
+                        <li>Extensible with extensions</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="library-card card p-3">
+            <h4>Pandas</h4>
+            <ul>
+                <li><strong>Purpose</strong>: Data manipulation and analysis</li>
+                <li><strong>Key Features Used</strong>:
+                    <ul>
+                        <li>DataFrame operations for cleaning and filtering</li>
+                        <li><code>groupby()</code> and aggregation functions</li>
+                        <li>Merging datasets with <code>merge()</code></li>
+                        <li>Data I/O with <code>read_csv()</code>/<code>to_csv()</code></li>
+                    </ul>
+                </li>
+                <li><strong>Benefits</strong>:
+                    <ul>
+                        <li>Efficient handling of tabular data</li>
+                        <li>Rich set of data operations</li>
+                        <li>Integration with other Python libraries</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="library-card card p-3">
+            <h4>Scikit-learn</h4>
+            <ul>
+                <li><strong>Purpose</strong>: Machine learning in Python</li>
+                <li><strong>Key Features Used</strong>:
+                    <ul>
+                        <li><code>TfidfVectorizer</code> for text feature extraction</li>
+                        <li><code>cosine_similarity</code> for recommendation scoring</li>
+                        <li><code>linear_kernel</code> as optimized similarity measure</li>
+                    </ul>
+                </li>
+                <li><strong>Benefits</strong>:
+                    <ul>
+                        <li>Consistent API design</li>
+                        <li>Efficient implementations</li>
+                        <li>Good documentation</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="library-card card p-3">
+            <h4>Surprise</h4>
+            <ul>
+                <li><strong>Purpose</strong>: Recommendation system algorithms</li>
+                <li><strong>Key Features Used</strong>:
+                    <ul>
+                        <li><code>Dataset</code> class for rating data handling</li>
+                        <li><code>Reader</code> class for rating scale specification</li>
+                        <li>Built-in collaborative filtering algorithms</li>
+                    </ul>
+                </li>
+                <li><strong>Benefits</strong>:
+                    <ul>
+                        <li>Specialized for recommendation systems</li>
+                        <li>Includes various algorithms (KNN, SVD, etc.)</li>
+                        <li>Handles dataset splitting and evaluation</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="library-card card p-3">
+            <h4>Matplotlib/Seaborn</h4>
+            <ul>
+                <li><strong>Purpose</strong>: Data visualization</li>
+                <li><strong>Key Features Used</strong>:
+                    <ul>
+                        <li><code>countplot</code> for categorical distributions</li>
+                        <li><code>histplot</code> for numerical distributions</li>
+                        <li><code>barplot</code> for comparisons</li>
+                        <li>Figure customization and styling</li>
+                    </ul>
+                </li>
+                <li><strong>Benefits</strong>:
+                    <ul>
+                        <li>Publication-quality visuals</li>
+                        <li>Highly customizable</li>
+                        <li>Integration with Pandas</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <a href="/">Back to Home</a>
+    </div>
+       
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
